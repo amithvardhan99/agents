@@ -1,0 +1,1 @@
+Hi! I am Amith. I did my masters in Information Systems Technologies from Wilmington University. Right now I am a Data Scientist volunteer at DUTA, which is a news aggregator startup based in India. I am working on building an AI agent that can summarize news articles and provide insights on the same. 
