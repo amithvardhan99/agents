@@ -1,10 +1,18 @@
 #!/usr/bin/env python
 import sys
 import warnings
-import os
 from datetime import datetime
+from pathlib import Path
+
+from dotenv import load_dotenv
 
 from stock_picker.crew import StockPicker
+
+for _dir in Path(__file__).resolve().parents:
+    _env = _dir / ".env"
+    if _env.is_file():
+        load_dotenv(_env)
+        break
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 

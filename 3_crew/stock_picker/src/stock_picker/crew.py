@@ -1,3 +1,5 @@
+import os
+
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
@@ -6,7 +8,21 @@ from typing import List
 from .tools.push_tool import PushNotificationTool
 from crewai.memory import LongTermMemory, ShortTermMemory, EntityMemory
 from crewai.memory.storage.rag_storage import RAGStorage
-from crewai.memory.storage.ltm_sqlite_storage import LTMSQLiteStorage
+#from crewai.memory.storage. import LTMSQLiteStorage
+
+
+def _ollama_embedder_config() -> dict:
+    """Memory defaults to OpenAI embeddings; use Ollama to match agents.yaml (ollama/...)."""
+    base = os.environ.get("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
+    model = os.environ.get("OLLAMA_EMBED_MODEL", "nomic-embed-text")
+    return {
+        "provider": "ollama",
+        "config": {
+            "model": model,
+            "url": f"{base}/api/embeddings",
+        },
+    }
+
 
 class TrendingCompany(BaseModel):
     """ A company that is in the news and attracting attention """
@@ -21,6 +37,7 @@ class TrendingCompanyList(BaseModel):
 class TrendingCompanyResearch(BaseModel):
     """ Detailed research on a company """
     name: str = Field(description="Company name")
+    #market_position: str = ltm_sqlite_storageField(description="Current market position and competitive analysis")
     market_position: str = Field(description="Current market position and competitive analysis")
     future_outlook: str = Field(description="Future outlook and growth prospects")
     investment_potential: str = Field(description="Investment potential and suitability for investment")
@@ -91,8 +108,12 @@ class StockPicker():
             verbose=True,
             manager_agent=manager,
             memory=True,
+            embedder=_ollama_embedder_config(),
             # Long-term memory for persistent storage across sessions
-            long_term_memory = LongTermMemory(
+        )
+
+"""
+long_term_memory = LongTermMemory(
                 storage=LTMSQLiteStorage(
                     db_path="./memory/long_term_memory_storage.db"
                 )
@@ -122,4 +143,4 @@ class StockPicker():
                     path="./memory/"
                 )
             ),
-        )
+"""
