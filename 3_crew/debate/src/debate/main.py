@@ -8,6 +8,11 @@ from debate.crew import Debate
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
 # This main file is intended to be a way for you to run your
 # crew locally, so refrain from adding unnecessary logic into this file.
 # Replace with inputs you want to test with, it will automatically
@@ -18,7 +23,7 @@ def run():
     Run the crew.
     """
     inputs = {
-        'motion': 'There needs to be strict laws to regulate LLMs',
+        'motion': 'Are social media influencers promoting unrealistic beauty standards?',
     }
     
     try:
